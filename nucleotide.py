@@ -59,6 +59,17 @@ def approximatePatternMatching(pattern, genome, d):
             positions.append(i)
     return positions
 
+def updatedFrequencyWords(genome, pattern, d):
+    freqMap = {}
+    n = len(genome)
+    for i in range(n - len(pattern) + 1):
+        if hammingDistance(pattern, genome[i:i+len(pattern)]) <= d:
+            if pattern not in freqMap:
+                freqMap[pattern] = 1
+            else:
+                freqMap[pattern] += 1
+    return freqMap
+
 def solveApproximatePatternMatching():
     with open('data/dataset_9_4.txt') as f:
         pattern = f.readline().strip()
@@ -93,4 +104,5 @@ def solveMinSkew():
 # solveFromFile()
 # solveHammingDistance()
 # print(approximatePatternMatching('ATTCTGGA', 'CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAAT', 3))
-solveApproximatePatternMatching()
+# solveApproximatePatternMatching()
+print(updatedFrequencyWords('AACAAGCTGATAAACATTTAAAGAG', 'AAAAA', 1))
