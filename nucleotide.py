@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from frequentWord import frequentWords, betterFrequentWords, findClumps, frequencyTable,optimizedFindClumps
 
 def reverese_complement(seq):
     """Return the reverse complement of the input sequence."""
@@ -60,15 +61,29 @@ def approximatePatternMatching(pattern, genome, d):
     return positions
 
 def updatedFrequencyWords(genome, pattern, d):
-    freqMap = {}
-    n = len(genome)
-    for i in range(n - len(pattern) + 1):
+    count = 0
+    for i in range(len(genome) - len(pattern) + 1):
         if hammingDistance(pattern, genome[i:i+len(pattern)]) <= d:
-            if pattern not in freqMap:
-                freqMap[pattern] = 1
-            else:
-                freqMap[pattern] += 1
-    return freqMap
+            count += 1
+    return count
+
+def immediateNeighbors(pattern):
+    neighbors = []
+    for i in range(len(pattern)):
+        symbol = pattern[i]
+        for nucleotide in ['A', 'C', 'G', 'T']:
+            if nucleotide != symbol:
+                neighbor = pattern[:i] + nucleotide + pattern[i+1:]
+                neighbors.append(neighbor)
+    return neighbors
+
+def solveUpdatedFrequencyWords():
+    with open('data/dataset_9_6.txt') as f:
+        pattern = f.readline().strip()
+        genome = f.readline().strip()
+        d = int(f.readline().strip())
+    print(updatedFrequencyWords(genome, pattern, d))
+    
 
 def solveApproximatePatternMatching():
     with open('data/dataset_9_4.txt') as f:
@@ -105,4 +120,6 @@ def solveMinSkew():
 # solveHammingDistance()
 # print(approximatePatternMatching('ATTCTGGA', 'CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAAT', 3))
 # solveApproximatePatternMatching()
-print(updatedFrequencyWords('AACAAGCTGATAAACATTTAAAGAG', 'AAAAA', 1))
+# print(updatedFrequencyWords('TTTAGAGCCTTCAGAGG', 'GAGG', 2))
+# solveUpdatedFrequencyWords()
+print(immediateNeighbors('ACG'))
